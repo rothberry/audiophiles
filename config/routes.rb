@@ -2,13 +2,16 @@ Rails.application.routes.draw do
 
   namespace "api" do
     namespace "v1" do
-      resources :favorites
-      resources :comments
-      resources :song_tags
-      resources :tags
+      resources :favorites, only: [:show, :create, :destroy]
+      resources :comments, only: [:show, :create, :destroy]
+      # resources :song_tags # don't need
+      resources :tags, only: [:index, :create, :destroy, :update]
       resources :songs
-      resources :users
+      resources :users, except: [:create]
+      get '/profile', to: "users#profile"
 
+      # ! AUTH
+      post '/signup', to: "users#create"
       post '/login', to: "auth#login"
       delete '/logout', to: "auth#logout"
     end
