@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       get '/profile', to: "users#profile"
 
       # ! AUTH
+      get '/me', to: "auth#me"
       post '/signup', to: "users#create"
       post '/login', to: "auth#login"
       delete '/logout', to: "auth#logout"
