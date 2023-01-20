@@ -1,10 +1,13 @@
 import { createContext, useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 export const Context = createContext()
 
 const ContextProvider = (props) => {
 	const [currentUser, setCurrentUser] = useState({})
+	const [displayUser, setDisplayUser] = useState({})
 	const [loggedIn, setLoggedIn] = useState(false)
+	const nav = useNavigate()
 
 	useEffect(() => {
 		findMe()
@@ -18,6 +21,7 @@ const ContextProvider = (props) => {
 				if (!data.errors) {
 					setCurrentUser(data)
 					setLoggedIn(true)
+					nav("/")
 				} else {
 					console.log({ meError: data })
 				}
@@ -39,6 +43,7 @@ const ContextProvider = (props) => {
 				if (!data.errors) {
 					setCurrentUser(data)
 					setLoggedIn(true)
+					nav("/")
 				} else {
 					console.log({ loginErr: data })
 				}
@@ -75,9 +80,20 @@ const ContextProvider = (props) => {
 				if (!data.errors) {
 					setCurrentUser({})
 					setLoggedIn(false)
+					nav("/login")
 				} else {
 					console.log({ logoutErr: data })
 				}
+			})
+			.catch((err) => console.error(err))
+	}
+
+	const findDisplayUser = (slug) => {
+		fetch("/profile/" + slug)
+			.then((r) => r.json())
+			.then((data) => {
+				console.log(data)
+				setDisplayUser(data)
 			})
 			.catch((err) => console.error(err))
 	}
@@ -92,6 +108,8 @@ const ContextProvider = (props) => {
 		loginUser,
 		logoutUser,
 		signupUser,
+		findDisplayUser,
+		displayUser,
 	}
 
 	return <Context.Provider value={store}>{props.children}</Context.Provider>

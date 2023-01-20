@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       resources :tags, only: [:index, :create, :destroy, :update]
       resources :songs
       resources :users, except: [:create]
-      get '/profile', to: "users#profile"
+      get '/profile/:slug', to: "users#profile"
 
       # ! AUTH
       get '/me', to: "auth#me"

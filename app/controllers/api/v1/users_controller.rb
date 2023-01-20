@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authorize, only: [:create]
+  skip_before_action :authorize, only: [:create, :profile]
 
   def index
     render json: User.all, each_serializer: UserIndexSerializer
@@ -7,6 +7,12 @@ class Api::V1::UsersController < ApplicationController
 
   def show
     render json: User.find(params[:id])
+  end
+
+  def profile
+    # Find display user by username
+    # if not found, redirect to not found page
+    debugger
   end
 
   def create
